@@ -1,6 +1,63 @@
+'use client';
+
 import Image from "next/image";
+import { textToSpeech } from "./text_to_speech";
+import * as React from "react";
+
+const pages = ["READING TEXT OUTLOUD", "YES I AM ON THE SECOND PAGE"];
+const curr_page = 0;
+
+// Create a new SpeechSynthesisUtterance object
+// function SpeechComponent() {
+// }
+// const msg = new SpeechSynthesisUtterance();
+
+// // Configure language (BCP 47 language tag)
+// msg.lang = "en-US";  // English (US)
+// // Other examples: "fr-FR" (French), "es-ES" (Spanish), "de-DE" (German)
+
+// // Set speech rate (0.1 to 10, default is 1)
+// msg.rate = 1.0;  // Normal speed
+// // Lower values slow down speech, higher values speed it up
+
+// // Set pitch (0 to 2, default is 1)
+// msg.pitch = 1.0;  // Normal pitch
+
+// // Set volume (0 to 1)
+// msg.volume = 1.0;  // Full volume
+
+// // Select a specific voice (optional)
+// // First get available voices
+// const voices = window.speechSynthesis.getVoices();
+// const englishVoice = voices.find(voice => voice.lang.includes('en-'));
+// if (englishVoice) {
+//     msg.voice = englishVoice;
+// }
+
 
 export default function Home() {
+  const [msg, setMsg] = React.useState<SpeechSynthesisUtterance | null>(null);
+
+  React.useEffect(() => {
+    const msg = new SpeechSynthesisUtterance();
+    msg.lang = "en-US";
+    msg.rate = 0.25;
+    msg.pitch = 1.0;
+    msg.volume = 1.0;
+    const voices = window.speechSynthesis.getVoices();
+    const englishVoice = voices.find(voice => voice.lang.includes('en-'));
+    if (englishVoice) {
+        msg.voice = englishVoice;
+    }
+    setMsg(msg);
+  }, []);
+
+  const handleVoiceClick = () => {
+    if (msg) {
+      textToSpeech(pages, curr_page, msg);
+    }
+  }
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -48,6 +105,13 @@ export default function Home() {
             rel="noopener noreferrer"
           >
             Read our docs
+          </a>
+          <a
+            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
+            onClick={() => handleVoiceClick()}
+            rel="noopener noreferrer"
+          >
+            Voice
           </a>
         </div>
       </main>

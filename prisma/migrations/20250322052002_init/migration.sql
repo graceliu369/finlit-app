@@ -16,7 +16,7 @@ CREATE TABLE "User" (
     "french" BOOLEAN NOT NULL,
     "math" BOOLEAN NOT NULL,
     "music" BOOLEAN NOT NULL,
-    "science" BBOOLEAN NOT NULL,
+    "science" BOOLEAN NOT NULL,
     "social_sciences" BOOLEAN NOT NULL
 );
 
